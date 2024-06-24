@@ -1691,9 +1691,20 @@ def read_file_from_process_wd(test, name):
 
 
 def wait_for_file_on_target(testcase, file_path, max_attempts=6):
+    def local_file_exists(fpath):
+        return os.path.exists(fpath)
+
+    def remote_file_exists(fpath):
+        err, retcode, _msg = testcase.run_platform_command("ls %s" % fpath)
+        return err.Success() and retcode == 0
+
+    if lldb.remote_platform:
+        file_exists = remote_file_exists
+    else:
+        file_exists = local_file_exists
+
     for i in range(max_attempts):
-        err, retcode, msg = testcase.run_platform_command("ls %s" % file_path)
-        if err.Success() and retcode == 0:
+        if file_exists(file_path):
             break
         if i < max_attempts:
             # Exponential backoff!
