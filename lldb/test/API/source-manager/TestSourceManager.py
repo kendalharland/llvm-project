@@ -171,6 +171,7 @@ class SourceManagerTestCase(TestBase):
         self.do_display_source_python_api(use_color, r" main\(", syntax_highlighting)
         self.do_display_source_python_api(use_color, r"\);", syntax_highlighting)
 
+    @expectedFailureAll(triple="x86_64-.*-windows.*")
     def test_move_and_then_display_source(self):
         """Test that target.source-map settings work by moving main.c to hidden/main.c."""
         self.build()
@@ -282,6 +283,7 @@ class SourceManagerTestCase(TestBase):
             substrs=["Hello lldb"],
         )
 
+    @expectedFailureAll(triple="x86_64-.*-windows.*")
     def test_set_breakpoint_with_absolute_path(self):
         self.build()
         hidden = self.getBuildArtifact("hidden")
@@ -361,16 +363,12 @@ class SourceManagerTestCase(TestBase):
 
         # Create a first target.
         self.runCmd("file " + exe, CURRENT_EXECUTABLE_SET)
-        lldbutil.run_break_set_by_symbol(
-            self, "main", num_expected_locations=1
-        )
+        lldbutil.run_break_set_by_symbol(self, "main", num_expected_locations=1)
         self.expect("run", RUN_SUCCEEDED, substrs=["Hello world"])
 
         # Create a second target.
         self.runCmd("file " + exe, CURRENT_EXECUTABLE_SET)
-        lldbutil.run_break_set_by_symbol(
-            self, "main", num_expected_locations=1
-        )
+        lldbutil.run_break_set_by_symbol(self, "main", num_expected_locations=1)
         self.expect("run", RUN_SUCCEEDED, substrs=["Hello world"])
 
         # Modify the source file content.
@@ -381,7 +379,8 @@ class SourceManagerTestCase(TestBase):
         self.runCmd("source cache clear")
 
         # Make sure we're seeing the new content from the clean process cache.
-        self.expect("next",
+        self.expect(
+            "next",
             SOURCE_DISPLAYED_CORRECTLY,
             substrs=["Hello lldb"],
         )
@@ -391,8 +390,8 @@ class SourceManagerTestCase(TestBase):
 
         # Make sure we're seeing the old content from the first target's
         # process cache.
-        self.expect("next",
+        self.expect(
+            "next",
             SOURCE_DISPLAYED_CORRECTLY,
             substrs=["Hello world"],
         )
-

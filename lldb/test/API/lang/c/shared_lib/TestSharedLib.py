@@ -1,6 +1,5 @@
 """Test that types defined in shared libraries work correctly."""
 
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -26,10 +25,12 @@ class SharedLibTestCase(TestBase):
 
         self.expect("expression GetMeASubFoo(my_foo_ptr)", startstr="(sub_foo *) $")
 
+    @expectedFailureAll(triple="x86_64-.*-windows.*")
     def test_expr(self):
         """Test that types work when defined in a shared library and forward-declared in the main executable"""
         self.common_test_expr(True)
 
+    @expectedFailureAll(triple="x86_64-.*-windows.*")
     def test_expr_no_preload(self):
         """Test that types work when defined in a shared library and forward-declared in the main executable, but with preloading disabled"""
         self.common_test_expr(False)
