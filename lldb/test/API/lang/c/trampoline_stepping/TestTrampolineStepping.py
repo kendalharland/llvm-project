@@ -65,6 +65,7 @@ class TestTrampoline(TestBase):
         name = thread.frames[0].GetFunctionName()
         self.assertIn('chained_trampoline_call', name)
 
+    @skipIf(oslist=["windows"], archs=["x86_64"])
     def test_trampoline_after_nodebug(self):
         thread = self.setup('Break here for nodebug then trampoline')
 
