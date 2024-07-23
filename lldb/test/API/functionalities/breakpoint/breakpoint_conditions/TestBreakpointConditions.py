@@ -155,13 +155,13 @@ class BreakpointConditionsTestCase(TestBase):
             breakpoint.GetThreadIndex(), 1, "The thread index has been set correctly"
         )
 
+        # Set the condition on the breakpoint.
+        breakpoint.SetCondition("val == 3")
+
         # Get the breakpoint location from breakpoint after we verified that,
         # indeed, it has one location.
         location = breakpoint.GetLocationAtIndex(0)
         self.assertTrue(location and location.IsEnabled(), VALID_BREAKPOINT_LOCATION)
-
-        # Set the condition on the breakpoint location.
-        location.SetCondition("val == 3")
         self.expect(location.GetCondition(), exe=False, startstr="val == 3")
 
         # Now launch the process, and do not stop at entry point.
