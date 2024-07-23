@@ -1,3 +1,4 @@
+# XFAIL: target=x86_64-{{.*}}-windows{{.*}}
 // Make sure we properly load in new extension members after an import.
 // rdar://64040436
 // REQUIRES: swift

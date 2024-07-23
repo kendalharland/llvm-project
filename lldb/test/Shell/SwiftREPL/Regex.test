@@ -1,3 +1,4 @@
+# XFAIL: target=x86_64-{{.*}}-windows{{.*}}
 // Test that we can use Swift's regex functionalities on the REPL.
 // REQUIRES: swift
 

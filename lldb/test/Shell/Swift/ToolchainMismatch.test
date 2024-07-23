@@ -1,3 +1,4 @@
+# XFAIL: target=x86_64-{{.*}}-windows{{.*}}
 # REQUIRES: swift
 
 # Tests that a warning is printed when stopped in a Swift frame

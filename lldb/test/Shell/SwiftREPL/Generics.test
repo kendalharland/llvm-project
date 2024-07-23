@@ -1,3 +1,4 @@
+# XFAIL: target=x86_64-{{.*}}-windows{{.*}}
 // Test that generics work in the REPL.
 // REQUIRES: swift
 

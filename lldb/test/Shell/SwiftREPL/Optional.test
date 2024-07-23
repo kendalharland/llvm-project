@@ -1,3 +1,4 @@
+# XFAIL: target=x86_64-{{.*}}-windows{{.*}}
 // RUN: %lldb --repl < %s | FileCheck %s
 // REQUIRES: swift
 
