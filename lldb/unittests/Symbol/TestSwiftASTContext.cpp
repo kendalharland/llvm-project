@@ -17,6 +17,8 @@
 #include "lldb/Host/FileSystem.h"
 #include "lldb/Host/HostInfo.h"
 #include "llvm/Support/FileUtilities.h"
+#include "llvm/Support/Path.h"
+#include <filesystem>
 
 using namespace lldb;
 using namespace lldb_private;
@@ -32,6 +34,13 @@ using namespace lldb_private;
   } else {                                                                     \
   }
 
+
+std::string make_preferred_path(const char *filename) {
+  std::filesystem::path path(filename);
+  std::string preferred_path{path.make_preferred().u8string()};
+  return preferred_path;
+}
+
 class TestSwiftASTContext : public testing::Test {
 public:
   SubsystemRAII<FileSystem, HostInfo> subsystems;
@@ -43,9 +52,9 @@ public:
 };
 
 struct SwiftASTContextTester : public SwiftASTContext {
-  #ifndef NDEBUG
-    SwiftASTContextTester() : SwiftASTContext() {}
-  #endif
+#ifndef NDEBUG
+  SwiftASTContextTester() : SwiftASTContext() {}
+#endif
 
   TypeSystemSwiftTypeRef &GetTypeSystemSwiftTypeRef() override {
     return m_typeref_typesystem;
@@ -80,6 +89,8 @@ TEST_F(TestSwiftASTContext, SwiftFriendlyTriple) {
             llvm::Triple("aarch64-unknown-linux-gnu"));
 }
 
+// This test uses absolute paths and path separators that aren't Windows compatible.
+#ifndef _WIN32
 TEST_F(TestSwiftASTContext, ApplyWorkingDir) {
   std::string abs_working_dir = "/abs/dir";
   std::string rel_working_dir = "rel/dir";
@@ -167,24 +178,27 @@ TEST_F(TestSwiftASTContext, ApplyWorkingDir) {
   SwiftASTContext::ApplyWorkingDir(dot_dot_path, dot_working_dir);
   EXPECT_EQ(dot_dot_path, llvm::SmallString<128>("-iquote."));
 }
+#endif
 
 TEST_F(TestSwiftASTContext, PluginPath) {
-  llvm::StringRef path(
+  llvm::StringRef path(make_preferred_path(
       "/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/"
-      "lib/swift/host/plugins/libFoo.dylib");
-  llvm::StringRef local_path(
+      "lib/swift/host/plugins/libFoo.dylib"));
+  llvm::StringRef local_path(make_preferred_path(
       "/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/"
-      "local/lib/swift/host/plugins/libFoo.dylib");
-  std::string server("/Xcode.app/Contents/Developer/Toolchains/"
-                     "XcodeDefault.xctoolchain/usr/bin/swift-plugin-server");
+      "local/lib/swift/host/plugins/libFoo.dylib"));
+  std::string server = make_preferred_path(
+      "/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/"
+      "bin/swift-plugin-server");
+
   EXPECT_EQ(SwiftASTContext::GetPluginServer(path), server);
   EXPECT_EQ(
       SwiftASTContext::GetPluginServer(llvm::sys::path::parent_path(path)),
       server);
   EXPECT_EQ(SwiftASTContext::GetPluginServer(local_path), server);
-  EXPECT_EQ(
-      SwiftASTContext::GetPluginServer(llvm::sys::path::parent_path(local_path)),
-      server);
+  EXPECT_EQ(SwiftASTContext::GetPluginServer(
+                llvm::sys::path::parent_path(local_path)),
+            server);
 }
 
 namespace {
@@ -231,6 +245,8 @@ const std::vector<std::string> uniqued_flags = {
 };
 } // namespace
 
+// This test uses absolute paths and path separators that aren't Windows compatible.
+#ifndef _WIN32
 TEST_F(ClangArgs, UniquingCollisionWithExistingFlags) {
   const std::vector<std::string> source = duplicated_flags;
   std::vector<std::string> dest = uniqued_flags;
@@ -238,7 +254,10 @@ TEST_F(ClangArgs, UniquingCollisionWithExistingFlags) {
 
   EXPECT_EQ(dest, uniqued_flags);
 }
+#endif
 
+// This test uses absolute paths and path separators that aren't Windows compatible.
+#ifndef _WIN32
 TEST_F(ClangArgs, UniquingCollisionWithAddedFlags) {
   const std::vector<std::string> source = duplicated_flags;
   std::vector<std::string> dest;
@@ -246,6 +265,7 @@ TEST_F(ClangArgs, UniquingCollisionWithAddedFlags) {
 
   EXPECT_EQ(dest, uniqued_flags);
 }
+#endif
 
 TEST_F(ClangArgs, DoubleDash) {
   // -v with all currently ignored arguments following.
@@ -267,7 +287,7 @@ TEST_F(TestSwiftASTContext, IVFS) {
   llvm::FileRemover remover(name);
 
   std::string valid = name.str().str();
-  std::string invalid = name.str().drop_back(1).str() +"XXX";
+  std::string invalid = name.str().drop_back(1).str() + "XXX";
   std::vector<std::string> args;
   args.push_back("-ivfsoverlay");
   args.push_back(valid);
