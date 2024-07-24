@@ -4,6 +4,7 @@ Make sure the getting a variable path works and doesn't crash.
 
 import lldb
 import lldbsuite.test.lldbutil as lldbutil
+from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
 
 
@@ -13,6 +14,10 @@ class TestVarPath(TestBase):
     # each debug info format.
     NO_DEBUG_INFO_TESTCASE = True
 
+    @skipIf(
+        triple="x86_64-.*-windows.*",
+        bugnumber="github.com/llvm/llvm-project/issues/100284",
+    )
     def test_frame_var(self):
         self.build()
         self.do_test()
