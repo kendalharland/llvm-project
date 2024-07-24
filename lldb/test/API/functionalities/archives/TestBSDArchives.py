@@ -22,7 +22,7 @@ class BSDArchivesTestCase(TestBase):
         self.line = line_number("a.c", "// Set file and line breakpoint inside a().")
 
     @expectedFailureAll(
-        oslist=["windows"],
+        triple=["aarch.*-windows.*"],
         bugnumber="llvm.org/pr24527.  Makefile.rules doesn't know how to build static libs on Windows",
     )
     @expectedFailureAll(remote=True)
