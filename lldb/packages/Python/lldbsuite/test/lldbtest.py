@@ -983,7 +983,7 @@ class Base(unittest.TestCase):
                     print("runCmd failed!", file=sbuf)
                     print(self.res.GetError(), file=sbuf)
 
-                print("output:", self.res.GetOutput())
+                print("output:", self.res.GetOutput().encode('utf-8'))
 
             if self.res.Succeeded():
                 break
