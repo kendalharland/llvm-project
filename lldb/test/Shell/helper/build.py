@@ -698,6 +698,8 @@ class MsvcBuilder(Builder):
         args.append(self.linker)
         args.append("/DEBUG:FULL")
         args.append("/INCREMENTAL:NO")
+        args.append("/EXPORT:call_func")
+        args.append("/EXPORT:realign_stack")
         if self.nodefaultlib:
             args.append("/nodefaultlib")
             args.append("/entry:main")
