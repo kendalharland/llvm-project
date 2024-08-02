@@ -333,6 +333,8 @@ config.test_format = lldbtest.LLDBTest(dotest_cmd)
 
 # Propagate TERM or default to vt100.
 config.environment["TERM"] = os.getenv("TERM", default="vt100")
+config.environment["LLDB_USE_LLDB_SERVER"] = os.getenv("LLDB_USE_LLDB_SERVER", default="0")
+config.environment["LLDB_USE_NATIVE_PDB_READER"] = "1"
 
 # Propagate FREEBSD_LEGACY_PLUGIN
 if "FREEBSD_LEGACY_PLUGIN" in os.environ:
