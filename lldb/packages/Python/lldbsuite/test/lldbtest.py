@@ -1414,9 +1414,11 @@ class Base(unittest2.TestCase):
         self.runBuildCommand(command)
 
     def runBuildCommand(self, command):
+        print('runBuildCommand:', seven.join_for_shell(command))
         self.trace(seven.join_for_shell(command))
         try:
             output = check_output(command, stderr=STDOUT, errors="replace")
+            print('output:', output)
         except CalledProcessError as cpe:
             raise build_exception.BuildError(cpe)
         self.trace(output)
@@ -1991,6 +1993,7 @@ class TestBase(Base, metaclass=LLDBTestCaseFactory):
 
         running = cmd.startswith("run") or cmd.startswith("process launch")
 
+        print("runCmd:", cmd)
         for i in range(self.maxLaunchCount if running else 1):
             with recording(self, trace) as sbuf:
                 print("runCmd:", cmd, file=sbuf)
@@ -2006,6 +2009,7 @@ class TestBase(Base, metaclass=LLDBTestCaseFactory):
                     print("runCmd failed!", file=sbuf)
                     print(self.res.GetError(), file=sbuf)
 
+            print("output:", self.res.GetOutput())
             if self.res.Succeeded():
                 break
             elif running:

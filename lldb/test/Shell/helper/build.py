@@ -145,7 +145,7 @@ parser.add_argument(
     "--verbose",
     dest="verbose",
     action="store_true",
-    default=False,
+    default=True,
     help="Print verbose output",
 )
 
