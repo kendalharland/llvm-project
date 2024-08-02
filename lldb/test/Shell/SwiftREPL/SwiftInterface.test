@@ -1,5 +1,6 @@
 // Test that .swiftinterface files can be loaded via the repl.
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: rm -rf %t
 // RUN: mkdir %t

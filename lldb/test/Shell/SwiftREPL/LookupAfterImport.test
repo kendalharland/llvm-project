@@ -1,6 +1,7 @@
 // Make sure we properly load in new extension members after an import.
 // rdar://64040436
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: rm -rf %t
 // RUN: mkdir %t

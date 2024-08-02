@@ -1,5 +1,6 @@
 // RUN: %lldb --repl < %s 2>&1 | FileCheck %s
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 class Foo {
   // Don't make any of these 'open'.

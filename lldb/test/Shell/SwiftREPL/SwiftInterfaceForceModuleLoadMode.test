@@ -4,6 +4,7 @@
 // modes as this also causes the Swift stdlib to be loaded via its module
 // interface file, which slows down this test considerably.
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: rm -rf %t && mkdir %t
 

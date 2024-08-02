@@ -1,5 +1,6 @@
 // Test that importing non-existing module fails.
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: %lldb --repl < %s 2>&1 | FileCheck %s
 

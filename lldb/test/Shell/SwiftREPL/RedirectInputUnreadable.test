@@ -1,5 +1,6 @@
 // Test that input can't be redirected from unreadable A.swift
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: mkdir -p %t
 // RUN: cp %S/Inputs/A.swift %t/A.swift

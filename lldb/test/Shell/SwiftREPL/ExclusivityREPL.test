@@ -1,5 +1,6 @@
 // Runtime checks for exclusive access should be enabled in the REPL.
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: %lldb --repl < %s 2>&1 | FileCheck %s
 // CHECK-DAG: modification requires exclusive access

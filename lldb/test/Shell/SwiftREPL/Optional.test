@@ -1,5 +1,6 @@
 // RUN: %lldb --repl < %s | FileCheck %s
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 enum Patatino {
   case first

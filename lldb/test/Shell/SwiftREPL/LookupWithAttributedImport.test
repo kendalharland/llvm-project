@@ -1,6 +1,7 @@
 // Make sure import attributes are taken into consideration at every evaluation
 // rdar://65319954
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: rm -rf %t
 // RUN: mkdir %t

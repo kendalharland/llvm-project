@@ -1,5 +1,6 @@
 // Basic sanity checking of the REPL.
 // REQUIRES: swift
+// REQUIRES: system-darwin
 
 // RUN: %lldb --repl --repl-language swift
 
