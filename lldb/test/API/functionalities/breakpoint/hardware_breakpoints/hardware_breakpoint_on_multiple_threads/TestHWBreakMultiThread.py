@@ -17,6 +17,7 @@ class HardwareBreakpointMultiThreadTestCase(HardwareBreakpointTestBase):
 
     @skipIfOutOfTreeDebugserver
     @skipTestIfFn(does_not_support_hw_breakpoints)
+    @skipUnlessDarwin
     def test_hw_break_set_delete_multi_thread_macos(self):
         self.build()
         self.setTearDownCleanup()
@@ -24,6 +25,7 @@ class HardwareBreakpointMultiThreadTestCase(HardwareBreakpointTestBase):
 
     @skipIfOutOfTreeDebugserver
     @skipTestIfFn(does_not_support_hw_breakpoints)
+    @skipUnlessDarwin
     def test_hw_break_set_disable_multi_thread_macos(self):
         self.build()
         self.setTearDownCleanup()
